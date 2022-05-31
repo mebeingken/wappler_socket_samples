@@ -1,0 +1,10 @@
+{
+  "debug": false,
+  "secret": "YdJpE9ptAHJnRfx",
+  "redis": "redis://localhost:6379",
+  "session": {
+    "store": {
+      "$type": "redis"
+    }
+  }
+}

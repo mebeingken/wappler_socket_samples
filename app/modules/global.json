@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "my_socket_id"
+      }
+    ]
+  },
+  "exec": {}
+}

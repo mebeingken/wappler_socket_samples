@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "socket_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "contacts",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "contacts",
+                "column": "id"
+              },
+              {
+                "table": "contacts",
+                "column": "first_name"
+              },
+              {
+                "table": "contacts",
+                "column": "last_name"
+              }
+            ],
+            "table": {
+              "name": "contacts"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "SELECT id, first_name, last_name\nFROM contacts",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "first_name"
+          },
+          {
+            "type": "text",
+            "name": "last_name"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "my_socket_id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{$_GET.socket_id}}"
+        }
+      }
+    ]
+  }
+}

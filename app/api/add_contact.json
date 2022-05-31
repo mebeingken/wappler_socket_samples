@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "first_name"
+      },
+      {
+        "type": "text",
+        "name": "last_name"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "insert_contact",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "contacts",
+                "column": "first_name",
+                "type": "text",
+                "value": "{{$_POST.first_name}}"
+              },
+              {
+                "table": "contacts",
+                "column": "last_name",
+                "type": "text",
+                "value": "{{$_POST.last_name}}"
+              }
+            ],
+            "table": "contacts",
+            "returning": "id",
+            "query": "INSERT INTO contacts\n(first_name, last_name) VALUES (:P1 /* {{$_POST.first_name}} */, :P2 /* {{$_POST.last_name}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.first_name}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.last_name}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "msg",
+        "module": "sockets",
+        "action": "message",
+        "options": {
+          "socketId": "{{$_SESSION.my_socket_id}}",
+          "eventName": "contact_refresh"
+        }
+      }
+    ]
+  }
+}
